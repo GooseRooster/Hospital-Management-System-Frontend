@@ -17,8 +17,15 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import Home from './Home';
 import UpdateDetails from './UpdateDetails';
+<<<<<<< HEAD
+
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Register from './Register';
+import { render } from 'react-dom';
+
 import Appointments, { Appointment } from './Appointments';
 import Prescriptions, { Prescription } from './Prescription';
 import Person from './Person';
@@ -28,9 +35,11 @@ import { Info } from '@material-ui/icons';
 import AppointmentUser from './AppointmentsUser';
 import PrescriptionUser from './PrescriptionUser';
 import PaymentHistoryUser from './PaymentHistoryUser';
+=======
+>>>>>>> 4c15051c0a9009f41fc8012d112fdbb74d96cf1b
+
 
 const drawerWidth = 240;
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -88,11 +97,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 export default function PersistentDrawerLeft() {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
+  const [update, setUpdate] = React.useState(1);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -101,14 +111,32 @@ export default function PersistentDrawerLeft() {
     setOpen(false);
   };
 
-  const navStyle ={
+  const navStyle = {
     color: 'grey'
- };
+  };
 
- 
- const componentMapping = {
-     UpdateDetails,
- }
+
+  const handleUpdate = () => {
+    setUpdate(update+1)
+    if(update==3){
+      setUpdate(update-2)
+    }
+  }
+
+
+
+
+
+
+  let button;
+  if (update === 2) {
+    button = <UpdateDetails />;
+  } else if (update === 3) {
+    button = <Register />;
+    
+  } else if (update === 1) {
+    button = <Home />;
+  }
 
   return (
     <div className={classes.root}>
@@ -130,7 +158,7 @@ export default function PersistentDrawerLeft() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-           <h2>Hospital Management System</h2>
+            <h2>Hospital Management System</h2>
           </Typography>
         </Toolbar>
       </AppBar>
@@ -150,12 +178,13 @@ export default function PersistentDrawerLeft() {
         </div>
         <Divider />
         <List>
-          {["Hello",'Home','Account', 'Appointments', 'Presriptions', 'Payment History'].map((text, index) => (
-            <ListItem   button key={text}>
-             <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-             <Link style = {navStyle} >
-              <ListItemText primary={text}/>
-             </Link>
+          {['Home', 'Update Information', 'Register', 'Presriptions', 'Payment History'].map((text, index) => (
+            <ListItem button key={text}>
+              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+              <Link style={navStyle} onClick={handleUpdate}  >
+                <ListItemText primary={text} />
+
+              </Link>
             </ListItem>
           ))}
         </List>
@@ -164,9 +193,11 @@ export default function PersistentDrawerLeft() {
           {['Logout'].map((text, index) => (
             <ListItem button key={text}>
               <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <Link style = {navStyle} switchComponent={text}>
-              <ListItemText primary={text} />
-             </Link>
+              <Link to={"/" + text} style={navStyle}>
+
+                <ListItemText primary={text} />
+
+              </Link>
             </ListItem>
           ))}
         </List>
@@ -176,12 +207,16 @@ export default function PersistentDrawerLeft() {
           [classes.contentShift]: open,
         })}
       >
-        <div className={classes.drawerHeader} 
+        <div className={classes.drawerHeader}
         />
+
+        {button}
       
-        <PaymentHistoryUser/>
+     <UpdateDetails/>
             
+
       </main>
     </div>
   );
 }
+
